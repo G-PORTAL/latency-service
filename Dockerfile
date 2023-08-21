@@ -1,4 +1,4 @@
-FROM harbor.g-portal.se/alpine/golang:latest
+FROM gportal/golang:latest
 
 ARG RUNTIME_VERSION
 ARG COMMIT_SHA1
