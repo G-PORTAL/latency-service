@@ -14,6 +14,8 @@ type Config struct {
 	LetsEncrypt        bool
 	Logging            bool
 	LetsEncryptEmail   string
+	CertPath           string
+	KeyPath            string
 }
 
 func (c Config) GetCertificateDirectory() string {
@@ -30,6 +32,8 @@ func GetConfig() Config {
 		DataDirectory:      getEnv("LATENCY_DATA_DIRECTORY", "/data"),
 		ListenAddressHTTP:  getEnv("LATENCY_LISTEN_HTTP", "0.0.0.0:8080"),
 		ListenAddressHTTPS: getEnv("LATENCY_LISTEN_HTTPS", "0.0.0.0:8443"),
+		CertPath:           getEnv("CERT_PATH", ""),
+		KeyPath:            getEnv("KEY_PATH", ""),
 		LetsEncrypt:        getEnvBool("LATENCY_LETS_ENCRYPT", false),
 		Logging:            getEnvBool("LATENCY_LOGGING", true),
 		LetsEncryptEmail:   getEnv("LATENCY_LETS_ENCRYPT_EMAIL", ""),

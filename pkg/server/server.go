@@ -92,6 +92,11 @@ func StartServer() {
 		if err != nil {
 			log.Fatalln(err)
 		}
+	} else if c.CertPath != "" && c.KeyPath != "" {
+		err = server.ServeTLS(httpsListener, c.CertPath, c.KeyPath)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	} else {
 		err = server.Serve(httpsListener)
 		if err != nil {
