@@ -70,6 +70,11 @@ func StartServer() {
 				log.Fatalln(err)
 			}
 		}()
+	} else if c.CertPath != "" && c.KeyPath != "" {
+		tlsConfig.GetCertificate = func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+			cert, err := tls.LoadX509KeyPair(c.CertPath, c.KeyPath)
+			return &cert, err
+		}
 	}
 
 	log.Printf("Starting HTTPS service on %s", c.ListenAddressHTTPS)
@@ -87,13 +92,8 @@ func StartServer() {
 	http.Handle("/ping", ping())
 
 	// Start HTTPS server
-	if c.LetsEncrypt {
+	if c.LetsEncrypt || (c.CertPath != "" && c.KeyPath != "") {
 		err = server.ServeTLS(httpsListener, "", "")
-		if err != nil {
-			log.Fatalln(err)
-		}
-	} else if c.CertPath != "" && c.KeyPath != "" {
-		err = server.ServeTLS(httpsListener, c.CertPath, c.KeyPath)
 		if err != nil {
 			log.Fatalln(err)
 		}
