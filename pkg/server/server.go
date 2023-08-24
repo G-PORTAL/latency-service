@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 	"crypto/tls"
-	"github.com/g-portal/metadata-server/pkg/config"
-	"github.com/g-portal/metadata-server/pkg/helper"
-	"github.com/g-portal/metadata-server/pkg/logging"
+	"github.com/g-portal/latency-service/pkg/config"
+	"github.com/g-portal/latency-service/pkg/helper"
+	"github.com/g-portal/latency-service/pkg/logging"
 	"golang.org/x/crypto/acme"
 	"golang.org/x/crypto/acme/autocert"
 	"log"

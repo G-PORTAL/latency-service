@@ -4,7 +4,7 @@
 package main
 
 import (
-	"github.com/g-portal/metadata-server/pkg/server"
+	"github.com/g-portal/latency-service/pkg/server"
 )
 
 func main() {
