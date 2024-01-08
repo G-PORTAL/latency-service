@@ -7,7 +7,7 @@ import (
 )
 
 type Config struct {
-	Hostname           string
+	Hostnames          []string
 	DataDirectory      string
 	ListenAddressHTTP  string
 	ListenAddressHTTPS string
@@ -28,7 +28,7 @@ func (c Config) GetLogFile() string {
 
 func GetConfig() Config {
 	return Config{
-		Hostname:           getEnv("LATENCY_HOST", "example-region.my-domain.com"),
+		Hostnames:          strings.Split(getEnv("LATENCY_HOST", "example-region.my-domain.com"), ","),
 		DataDirectory:      getEnv("LATENCY_DATA_DIRECTORY", "/data"),
 		ListenAddressHTTP:  getEnv("LATENCY_LISTEN_HTTP", "0.0.0.0:8080"),
 		ListenAddressHTTPS: getEnv("LATENCY_LISTEN_HTTPS", "0.0.0.0:8443"),
