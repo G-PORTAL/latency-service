@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 	"time"
 )
 
@@ -24,7 +25,7 @@ var server *http.Server
 // StartServer Starts the Gateway server
 func StartServer() {
 	c := config.GetConfig()
-	log.Printf("Starting Latency Service on %s.", c.Hostname)
+	log.Printf("Starting Latency Service on %s.", strings.Join(c.Hostnames, ", "))
 
 	if c.Logging {
 		log.Printf("Enabled logging to %s.", c.GetLogFile())
@@ -46,7 +47,7 @@ func StartServer() {
 		certManager := autocert.Manager{
 			Prompt:      autocert.AcceptTOS,
 			Email:       c.LetsEncryptEmail,
-			HostPolicy:  autocert.HostWhitelist(c.Hostname),
+			HostPolicy:  autocert.HostWhitelist(c.Hostnames...),
 			Cache:       autocert.DirCache(c.GetCertificateDirectory()),
 			RenewBefore: 12 * time.Hour,
 			Client: &acme.Client{
