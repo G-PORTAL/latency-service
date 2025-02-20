@@ -13,7 +13,6 @@ type Config struct {
 	ListenAddressHTTPS string
 	LetsEncrypt        bool
 	Logging            bool
-	LetsEncryptEmail   string
 	CertPath           string
 	KeyPath            string
 }
@@ -36,7 +35,6 @@ func GetConfig() Config {
 		KeyPath:            getEnv("KEY_PATH", ""),
 		LetsEncrypt:        getEnvBool("LATENCY_LETS_ENCRYPT", false),
 		Logging:            getEnvBool("LATENCY_LOGGING", true),
-		LetsEncryptEmail:   getEnv("LATENCY_LETS_ENCRYPT_EMAIL", ""),
 	}
 }
 

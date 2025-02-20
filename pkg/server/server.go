@@ -46,7 +46,6 @@ func StartServer() {
 
 		certManager := autocert.Manager{
 			Prompt:      autocert.AcceptTOS,
-			Email:       c.LetsEncryptEmail,
 			HostPolicy:  autocert.HostWhitelist(c.Hostnames...),
 			Cache:       autocert.DirCache(c.GetCertificateDirectory()),
 			RenewBefore: 12 * time.Hour,
