@@ -1,6 +1,3 @@
-//go:build linux
-// +build linux
-
 package server
 
 import (
@@ -57,7 +54,7 @@ func ping() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodOptions {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
-                        w.Header().Set("Access-Control-Allow-Headers", "*")
+			w.Header().Set("Access-Control-Allow-Headers", "*")
 			return
 		}
 
@@ -73,7 +70,7 @@ func ping() http.Handler {
 			return
 		}
 
-		info, err := tcpinfo.GetsockoptTCPInfo(tcpConnection)
+		rtt, err := tcpinfo.GetRTT(tcpConnection)
 		if err != nil {
 			log.Printf("Failed to get socket information: %s", err)
 			handleError(w)
@@ -82,7 +79,7 @@ func ping() http.Handler {
 
 		respBytes, err := json.Marshal(PingResponse{
 			SourceIP:  strings.Split(r.RemoteAddr, ":")[0],
-			LatencyMS: time.Duration(int64(info.Rtt * 1000)).Milliseconds(),
+			LatencyMS: rtt.Milliseconds(),
 			Time:      time.Now(),
 		})
 
@@ -96,7 +93,7 @@ func ping() http.Handler {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-                w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
 		_, _ = w.Write(respBytes)
 	})
 }

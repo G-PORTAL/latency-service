@@ -1,16 +1,24 @@
-//go:build linux
-// +build linux
-
 package tcpinfo
 
 import (
 	"fmt"
 	"net"
 	"syscall"
+	"time"
 	"unsafe"
 )
 
 type TCPInfo syscall.TCPInfo
+
+// GetRTT Return the smoothed round trip time of *net.TCPConn
+func GetRTT(tcpConn *net.TCPConn) (time.Duration, error) {
+	info, err := GetsockoptTCPInfo(tcpConn)
+	if err != nil {
+		return 0, err
+	}
+
+	return time.Duration(info.Rtt) * time.Microsecond, nil
+}
 
 // GetsockoptTCPInfo Return TCPInfo from *net.TCPConn
 func GetsockoptTCPInfo(tcpConn *net.TCPConn) (*TCPInfo, error) {
