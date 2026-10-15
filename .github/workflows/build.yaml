@@ -6,9 +6,33 @@ on:
       - 'main'
     tags:
       - 'v*'
+  pull_request:
 
 jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Unit tests
+        run: go test -v ./...
+
+      - name: E2E tests
+        run: go test -v -tags e2e ./e2e/
+
   binaries:
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -61,6 +85,7 @@ jobs:
 
   docker:
     if: github.ref == 'refs/heads/main'
+    needs: test
     runs-on: ubuntu-latest
     steps:
 
