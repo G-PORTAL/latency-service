@@ -56,7 +56,7 @@ jobs:
           mkdir -p dist
           go build -trimpath -ldflags "-s -w" -o "dist/latency-service-${GOOS}-${GOARCH}${ext}" ./cmd
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: latency-service-${{ matrix.goos }}-${{ matrix.goarch }}
           path: dist/*
